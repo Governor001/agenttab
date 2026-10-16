@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables — never commit secrets
+.env
+.env.*
+!.env.example
+
+# Circle credentials
+.circle/
+
+# Foundry build artefacts
+contracts/out/
+contracts/cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
