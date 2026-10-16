@@ -1,4 +1,4 @@
-# [App Name]
+# AgentTab
 
 > Built with Arc Studio - money-powered apps in minutes
 
@@ -14,7 +14,7 @@ AgentTab: a prepaid USDC tab contract. A business (payer) opens a tab with a ser
 
 | Contract | Chain | Address |
 |---|---|---|
-| AgentTab | Arc Testnet | 0x9d4e7926aaead225d2eed29f4737c3dd28be5a67 |
+| AgentTab | Arc Testnet | 0xf52108362fa77e8a3800954df8d69dc9836d2393 |
 
 ## Tech Stack
 

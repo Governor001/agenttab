@@ -2,9 +2,11 @@
  * AgentTab contract configuration.
  *
  * To switch to Arc mainnet:
- *   1. Change AGENT_TAB_CHAIN_ID to 2040 (Arc mainnet chain ID)
+ *   1. Change AGENT_TAB_CHAIN to the Arc mainnet chain object (chain ID: 5042)
+ *      RPC: https://rpc.mainnet.arc.io  Explorer: https://explorer.arc.io
  *   2. Change AGENT_TAB_ADDRESS to the mainnet deployment address
- *   3. Update src/config.ts to include the Arc mainnet chain
+ *   3. Change AGENT_TAB_DEPLOY_BLOCK to the mainnet deployment block
+ *   4. Update src/config.ts to include the Arc mainnet chain
  */
 
 import { arcTestnet } from 'viem/chains'
@@ -14,12 +16,12 @@ export const AGENT_TAB_CHAIN = arcTestnet
 export const AGENT_TAB_CHAIN_ID = arcTestnet.id // 5042002
 
 // ── Contract address ─────────────────────────────────────────────────────────
-export const AGENT_TAB_ADDRESS = '0x9d4e7926aaead225d2eed29f4737c3dd28be5a67' as const
+export const AGENT_TAB_ADDRESS = '0xf52108362fa77e8a3800954df8d69dc9836d2393' as const
 
 // ── Deployment block (Arc Testnet) ────────────────────────────────────────────
 // Used as the fromBlock for all event scans so no history is missed.
 // To switch to Arc mainnet, update this to the mainnet deployment block.
-export const AGENT_TAB_DEPLOY_BLOCK = 67543224n
+export const AGENT_TAB_DEPLOY_BLOCK = 67566743n
 
 // ── Event scan chunk size ─────────────────────────────────────────────────────
 // Arc Testnet RPC accepts up to 10 000 blocks per eth_getLogs request.

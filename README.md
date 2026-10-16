@@ -47,29 +47,29 @@ Arc is Circle's EVM blockchain where **USDC is the native gas token** — there 
 | Property | Value |
 |---|---|
 | Network | Arc Testnet (Chain ID: 5042002) |
-| Address | `0x9d4e7926aaead225d2eed29f4737c3dd28be5a67` |
-| Explorer | https://explorer.testnet.arc.io/address/0x9d4e7926aaead225d2eed29f4737c3dd28be5a67 |
+| Address | `0xf52108362fa77e8a3800954df8d69dc9836d2393` |
+| Explorer | https://explorer.testnet.arc.io/address/0xf52108362fa77e8a3800954df8d69dc9836d2393 |
 | USDC | `0x3600000000000000000000000000000000000000` (6 decimals) |
-| Deploy block | 67,543,224 |
+| Deploy block | 67,566,743 |
 
 ---
 
 ## Test Results
 
-**60 / 60 tests passing** — zero failures.
+**64 / 64 tests passing** — zero failures.
 
 Tests written with Foundry (Forge) and cover:
 
 | Category | Tests |
 |---|---|
-| `openTab` input validation (zero deposit, zero addresses, bad limits) | 6 |
+| `openTab` input validation (zero deposit, zero addresses, bad limits, past expiry) | 8 |
 | Happy path: open → charge → close with exact 6-decimal balances | 1 |
 | Charge > `maxPerCharge` reverts | 1 |
 | Charge > balance reverts | 1 |
 | Daily cap blocks overspend; full reset after 1-day warp | 3 |
 | Charge after expiry reverts | 1 |
 | Paused tab rejects charge | 1 |
-| Agent can pause; agent cannot close / topUp / updateLimits | 4 |
+| Agent can pause but cannot unpause; payer can unpause; agent cannot close / topUp / updateLimits | 6 |
 | Only provider can charge (payer / agent / stranger all revert) | 3 |
 | `closeTab`: exact refund, sets `open = false`, blocks further charges | 3 |
 | `topUp`, `updateLimits`, `remainingToday` coverage | 11 |
@@ -144,7 +144,7 @@ Output is in `dist/`.
 ```
 contracts/
   AgentTab.sol              # Main contract
-  test/AgentTab.t.sol       # Foundry test suite (60 tests)
+  test/AgentTab.t.sol       # Foundry test suite (64 tests)
   test-helpers/MockERC20.sol
 src/
   contracts/agentTab.ts     # ABI, address, deploy block, chain config

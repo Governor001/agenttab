@@ -251,6 +251,27 @@ contract AgentTabTest is Test {
         assertEq(agentTab.tabCount(), 1);
     }
 
+    function test_OpenTab_PastExpiry_Reverts() public {
+        // expiry = block.timestamp (not in the future) → InvalidLimits
+        vm.startPrank(payer);
+        usdc.approve(address(agentTab), DEPOSIT);
+        vm.expectRevert(AgentTab.InvalidLimits.selector);
+        agentTab.openTab(provider, agent, DEPOSIT, MAX_PER_CHARGE, DAILY_CAP, block.timestamp, "");
+        vm.stopPrank();
+    }
+
+    function test_OpenTab_PastExpiry_StrictlyPast_Reverts() public {
+        // expiry already in the past
+        uint256 pastExpiry = block.timestamp > 1 ? block.timestamp - 1 : 0;
+        if (pastExpiry == 0) return; // skip if timestamp is 0 (unreachable in practice)
+
+        vm.startPrank(payer);
+        usdc.approve(address(agentTab), DEPOSIT);
+        vm.expectRevert(AgentTab.InvalidLimits.selector);
+        agentTab.openTab(provider, agent, DEPOSIT, MAX_PER_CHARGE, DAILY_CAP, pastExpiry, "");
+        vm.stopPrank();
+    }
+
     function test_OpenTab_TabsByPayerAndProvider() public {
         uint256 tabId = _openDefaultTab();
         uint256[] memory byPayer    = agentTab.tabsByPayer(payer);
@@ -520,14 +541,41 @@ contract AgentTabTest is Test {
     function test_SetPaused_Unpauses() public {
         uint256 tabId = _openDefaultTab();
 
+        // Agent pauses
+        vm.prank(agent);
+        agentTab.setPaused(tabId, true);
+
+        // Payer (not agent) can unpause
+        vm.prank(payer);
+        agentTab.setPaused(tabId, false);
+
+        AgentTab.Tab memory tab = agentTab.getTab(tabId);
+        assertFalse(tab.paused, "unpaused by payer");
+    }
+
+    function test_SetPaused_AgentCannotUnpause_Reverts() public {
+        uint256 tabId = _openDefaultTab();
+
+        // Payer pauses
+        vm.prank(payer);
+        agentTab.setPaused(tabId, true);
+
+        // Agent attempts to unpause → must revert with NotPayer
+        vm.prank(agent);
+        vm.expectRevert(AgentTab.NotPayer.selector);
+        agentTab.setPaused(tabId, false);
+    }
+
+    function test_SetPaused_PayerCanUnpause() public {
+        uint256 tabId = _openDefaultTab();
+
         vm.prank(agent);
         agentTab.setPaused(tabId, true);
 
         vm.prank(payer);
         agentTab.setPaused(tabId, false);
 
-        AgentTab.Tab memory tab = agentTab.getTab(tabId);
-        assertFalse(tab.paused, "unpaused");
+        assertFalse(agentTab.getTab(tabId).paused, "payer successfully unpaused");
     }
 
     function test_SetPaused_EmitsTabPaused() public {

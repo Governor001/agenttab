@@ -80,6 +80,7 @@ contract AgentTab is ReentrancyGuard {
         if (provider == address(0) || agent == address(0)) revert ZeroAddress();
         if (deposit == 0) revert InvalidAmount();
         if (maxPerCharge == 0 || dailyCap == 0 || maxPerCharge > dailyCap) revert InvalidLimits();
+        if (expiry != 0 && expiry <= block.timestamp) revert InvalidLimits();
 
         USDC_TOKEN.safeTransferFrom(msg.sender, address(this), deposit);
 
@@ -154,8 +155,15 @@ contract AgentTab is ReentrancyGuard {
     function setPaused(uint256 tabId, bool paused) external {
         Tab storage tab = tabs[tabId];
 
-        if (msg.sender != tab.payer && msg.sender != tab.agent) revert NotPayerOrAgent();
         if (!tab.open) revert TabNotOpen();
+
+        if (paused) {
+            // Both payer and agent may pause
+            if (msg.sender != tab.payer && msg.sender != tab.agent) revert NotPayerOrAgent();
+        } else {
+            // Only payer may unpause
+            if (msg.sender != tab.payer) revert NotPayer();
+        }
 
         tab.paused = paused;
 
