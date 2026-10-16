@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #080f18;
+  --bg-gradient: linear-gradient(180deg, #080f18 0%, #0a1628 58%, #0d1e35 100%);
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.10);
+  --surface-muted: #111d2e;
+  --ink: #f0f4f0;
+  --ink-2: #c8d8c8;
+  --muted: #8fa88f;
+  --subtle: #5a7a5a;
+  --border: rgba(100, 200, 100, 0.12);
+  --border-strong: rgba(100, 220, 100, 0.35);
+  --accent: #4ade80;
+  --accent-dim: #22c55e;
+  --accent-hover: #86efac;
+  --success: #4ade80;
+  --danger: #f87171;
+  --warn: #fbbf24;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.display {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', Menlo, monospace;
+}
+
+/* Sonner toast overrides for dark theme */
+[data-sonner-toaster] [data-sonner-toast] {
+  background: #111d2e !important;
+  border: 1px solid rgba(100, 200, 100, 0.2) !important;
+  color: #f0f4f0 !important;
+}
