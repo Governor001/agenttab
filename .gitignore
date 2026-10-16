@@ -16,6 +16,10 @@ dist/
 contracts/out/
 contracts/cache/
 
+# Runtime logs (Arc Studio debug captures)
+console.jsonl
+traces.jsonl
+
 # OS / editor
 .DS_Store
 .idea/
